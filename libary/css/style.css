@@ -1,0 +1,385 @@
+/* SmartLib styles
+   Idea: every book is a library index card (red heading rule, blue ruled lines,
+   a coloured category tab). Everything else stays quiet. */
+/* EN: How to read this file: a rule = "selector { property: value; }". The selector picks HTML elements; each property changes how they look.
+   中文: 阅读方法：一条规则 = "选择器 { 属性: 值; }"。选择器选中 HTML 元素；每个属性改变它们的外观。 */
+
+/* EN: :root = the whole page. "--name" are CSS variables: define a colour once, reuse it with var(--name), change it in one place.
+   中文: :root 代表整个页面。"--名字" 是 CSS 变量：颜色只定义一次，用 var(--名字) 反复使用，要改只改一处。 */
+:root {
+    /* EN: main dark text/background colour (navy). 中文: 主要的深色文字/背景色（深蓝）。 */
+    --ink: #16243a;
+    /* EN: softer text colour for less important text. 中文: 次要文字的柔和颜色。 */
+    --ink-soft: #4a5a72;
+    /* EN: page background (light grey-blue, like a shelf). 中文: 页面背景（浅灰蓝，像书架）。 */
+    --shelf: #e8edf3;
+    /* EN: card/table background (white paper). 中文: 卡片/表格背景（白纸）。 */
+    --paper: #ffffff;
+    /* EN: blue ruled-line colour on index cards. 中文: 索引卡上的蓝色横线颜色。 */
+    --rule: #c3d6ea;
+    /* EN: red margin line colour; also used for errors/overdue. 中文: 红色边线颜色；也用于错误/逾期。 */
+    --margin: #d4493e;
+    /* EN: main green for buttons and links. 中文: 按钮和链接用的主绿色。 */
+    --pine: #1d6b57;
+    /* EN: darker green for hover. 中文: 悬停时用的深绿色。 */
+    --pine-dark: #15503f;
+    /* EN: gold accent colour. 中文: 金色强调色。 */
+    --brass: #b8892b;
+    /* EN: light border colour. 中文: 浅色边框。 */
+    --line: #d5dde8;
+    /* EN: success background / text colours. 中文: 成功状态的背景色/文字色。 */
+    --ok-bg: #dff1e9;
+    --ok-fg: #14543f;
+    /* EN: error background / text colours. 中文: 错误状态的背景色/文字色。 */
+    --bad-bg: #fbe3e0;
+    --bad-fg: #8f2a21;
+
+    /* EN: heading font; the list after it is a fallback if the Google font fails to load. 中文: 标题字体；后面的列表是 Google 字体加载失败时的备用字体。 */
+    --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+    /* EN: body font with fallbacks (system-ui = the user's system font). 中文: 正文字体及备用字体（system-ui = 用户系统自带字体）。 */
+    --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+/* EN: * = every element. border-box makes width include padding and border, so sizes are predictable. 中文: * 代表所有元素。border-box 让宽度包含内边距和边框，尺寸更好控制。 */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* EN: stops phones from auto-enlarging text when rotated. 中文: 防止手机横屏时自动放大文字。 */
+html { -webkit-text-size-adjust: 100%; }
+
+/* EN: body = the page. margin:0 removes default gap; background/color use our variables; font settings set the base text; line-height 1.6 = comfortable line spacing; min-height:100vh = at least the full screen height; flex column lets the footer stay at the bottom. */
+/* 中文: body 是整个页面。margin:0 去掉默认外边距；background/color 使用我们的变量；font 设置基础文字；line-height 1.6 让行距舒适；min-height:100vh 至少占满一屏高度；flex 纵向排列让页脚贴在底部。 */
+body {
+    margin: 0;
+    background: var(--shelf);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* EN: headings use the serif font, semibold, tight line height, small bottom margin. 中文: 标题使用衬线字体、半粗体、紧凑行高，底部留少量外边距。 */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.2; margin: 0 0 .5em; }
+/* EN: heading sizes (rem = relative to the base font size). 中文: 各级标题大小（rem 相对于基础字号）。 */
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1.2rem; }
+/* EN: paragraphs: no top gap, 1em gap below. 中文: 段落：上方无间距，下方 1em 间距。 */
+p { margin: 0 0 1em; }
+/* EN: links are green; darker green on hover. 中文: 链接为绿色；鼠标悬停时变深绿。 */
+a { color: var(--pine); }
+a:hover { color: var(--pine-dark); }
+
+/* EN: WHY: keyboard users need a visible focus ring. :focus-visible only shows it for keyboard focus. 中文: 为什么：键盘用户需要看得见的焦点框。:focus-visible 只在键盘聚焦时显示。 */
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+
+/* EN: .wrap = centred content column: width is the smaller of 1120px or screen minus 2rem; margin-inline:auto centres it. 中文: .wrap 是居中的内容列：宽度取 1120px 与"屏幕宽度减 2rem"中较小的；margin-inline:auto 让它水平居中。 */
+.wrap { width: min(1120px, 100% - 2rem); margin-inline: auto; }
+/* EN: main area grows (flex:1) to push the footer down; padding adds space top/bottom. 中文: 主内容区会增长（flex:1）把页脚推到底；padding 添加上下间距。 */
+.main-area { flex: 1; padding: 2rem 0 3rem; }
+
+/* EN: skip link is hidden off-screen (left:-999px) and slides into view only when focused. 中文: 跳转链接平时藏在屏幕外（left:-999px），获得焦点时才滑入可见区域。 */
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--paper); padding: .5rem 1rem; z-index: 10; }
+.skip-link:focus { left: 0; }
+
+/* ---------- header ---------- */
+/* EN: Section: header. 中文: 小节：页头。 */
+/* EN: dark navy bar with white text. 中文: 深蓝色顶栏，白色文字。 */
+.site-header { background: var(--ink); color: #fff; }
+/* EN: flex row: logo, menu and buttons side by side; gap = spacing; flex-wrap lets items drop to a new line on small screens. 中文: flex 横排：Logo、菜单、按钮并排；gap 是间距；flex-wrap 让小屏幕时元素换行。 */
+.header-row { display: flex; align-items: center; gap: 1.5rem; padding: .75rem 0; flex-wrap: wrap; }
+/* EN: logo text: serif font, large, white, no underline. 中文: Logo 文字：衬线字体、大号、白色、无下划线。 */
+.brand { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; color: #fff; text-decoration: none; letter-spacing: .01em; }
+.brand:hover { color: #fff; }
+/* EN: main menu: links in a row. 中文: 主菜单：链接横向排列。 */
+.main-nav { display: flex; gap: .25rem; flex-wrap: wrap; }
+/* EN: menu links: light colour, no underline, padded, rounded corners. 中文: 菜单链接：浅色、无下划线、有内边距、圆角。 */
+.main-nav a { color: #d6deea; text-decoration: none; padding: .4rem .75rem; border-radius: 4px; }
+/* EN: hover/active states: translucent white background (rgba = colour + transparency). 中文: 悬停/当前页状态：半透明白色背景（rgba = 颜色 + 透明度）。 */
+.main-nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.main-nav a.is-active { background: rgba(255,255,255,.16); color: #fff; }
+/* EN: margin-left:auto pushes this group to the far right. 中文: margin-left:auto 把这组元素推到最右边。 */
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.link-plain { color: #fff; text-decoration: none; padding: .4rem .5rem; }
+.link-plain:hover { color: #fff; text-decoration: underline; }
+.user-chip { font-size: .95rem; }
+/* EN: the small pill showing the role next to the name (border-radius:99px = fully rounded). 中文: 姓名旁显示角色的小胶囊（border-radius:99px = 完全圆角）。 */
+.user-chip small { background: rgba(255,255,255,.16); padding: .1rem .5rem; border-radius: 99px; margin-left: .35rem; font-size: .78rem; }
+/* EN: lets the logout form sit inside the header row without extra space. 中文: 让登出表单嵌在页头行里，不产生多余空白。 */
+.inline-form { margin: 0; display: inline; }
+
+/* EN: staff bar: a darker second row under the header. 中文: 员工栏：页头下面更深色的第二行。 */
+.staff-bar { background: #0f1b2d; border-top: 1px solid rgba(255,255,255,.08); }
+.staff-bar nav { display: flex; gap: .25rem; flex-wrap: wrap; padding: .35rem 0; }
+.staff-bar a { color: #b9c6d9; text-decoration: none; padding: .35rem .7rem; border-radius: 4px; font-size: .92rem; }
+.staff-bar a:hover { color: #fff; background: rgba(255,255,255,.08); }
+/* EN: current page gets a gold underline made with an inset shadow. 中文: 当前页面用内阴影做出金色下划线。 */
+.staff-bar a.is-active { color: #fff; box-shadow: inset 0 -2px 0 var(--brass); border-radius: 0; }
+
+/* ---------- buttons ---------- */
+/* EN: Section: buttons. 中文: 小节：按钮。 */
+/* EN: base button look shared by <a> and <button>: inline-block lets padding work on links; font:inherit makes buttons use the page font; cursor:pointer shows the hand; transparent border reserves space so hover colours don't shift the layout. */
+/* 中文: <a> 和 <button> 共用的基础按钮样式：inline-block 让链接也能用 padding；font:inherit 让按钮用页面字体；cursor:pointer 显示手形；透明边框预留空间，悬停变色时布局不会跳动。 */
+.btn {
+    display: inline-block; font: inherit; font-weight: 600; cursor: pointer;
+    padding: .55rem 1.1rem; border-radius: 6px; border: 2px solid transparent;
+    text-decoration: none; line-height: 1.3; text-align: center;
+}
+/* EN: variants: primary (green), brass (gold), ghost (transparent on dark), outline (green border), danger (red tint). 中文: 变体：primary（绿色）、brass（金色）、ghost（深色背景上的透明按钮）、outline（绿色边框）、danger（红色调）。 */
+.btn-primary { background: var(--pine); color: #fff; }
+.btn-primary:hover { background: var(--pine-dark); color: #fff; }
+.btn-brass { background: var(--brass); color: #1b1405; }
+.btn-brass:hover { background: #cf9c35; color: #1b1405; }
+.btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+.btn-ghost:hover { background: rgba(255,255,255,.12); }
+.btn-outline { background: transparent; color: var(--pine); border-color: var(--pine); }
+.btn-outline:hover { background: var(--pine); color: #fff; }
+.btn-danger { background: var(--bad-bg); color: var(--bad-fg); border-color: #efb9b3; }
+.btn-danger:hover { background: var(--margin); color: #fff; }
+/* EN: small buttons for table rows; ".btn-small.btn-danger" = an element with BOTH classes. 中文: 表格行里的小按钮；".btn-small.btn-danger" 表示同时拥有这两个类的元素。 */
+.btn-small { padding: .25rem .7rem; font-size: .88rem; border-width: 1px; background: #fff; color: var(--ink); border-color: var(--line); }
+.btn-small:hover { border-color: var(--ink-soft); }
+.btn-small.btn-danger { background: var(--bad-bg); color: var(--bad-fg); border-color: #efb9b3; }
+.btn-small.btn-danger:hover { background: var(--margin); color: #fff; }
+/* EN: full-width button. 中文: 占满整行宽度的按钮。 */
+.btn-block { display: block; width: 100%; }
+/* EN: disabled buttons look faded and show a "not allowed" cursor. 中文: 禁用的按钮变淡，并显示"禁止"光标。 */
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+.link-strong { font-weight: 600; }
+
+/* ---------- alerts ---------- */
+/* EN: Section: message boxes. border-left with a thick coloured edge marks the type. 中文: 小节：提示框。左侧加粗的彩色边框用来标记类型。 */
+.alert { padding: .8rem 1rem; border-radius: 6px; margin-bottom: 1.25rem; border-left: 5px solid; background: #fff; }
+.alert-success { border-color: var(--pine); background: var(--ok-bg); color: var(--ok-fg); }
+.alert-error { border-color: var(--margin); background: var(--bad-bg); color: var(--bad-fg); }
+.alert-info { border-color: var(--brass); background: #fbf1d9; color: #5b4310; }
+
+/* ---------- chips ---------- */
+/* EN: Section: chips = small rounded status labels. nowrap keeps the text on one line. 中文: 小节：chip = 小的圆角状态标签。nowrap 让文字不换行。 */
+.chip { display: inline-block; font-size: .82rem; font-weight: 600; padding: .1rem .6rem; border-radius: 99px; white-space: nowrap; }
+.chip-ok { background: var(--ok-bg); color: var(--ok-fg); }
+.chip-out { background: var(--bad-bg); color: var(--bad-fg); }
+.chip-muted { background: #e6eaf0; color: var(--ink-soft); }
+
+/* ---------- hero ---------- */
+/* EN: Section: home page hero. Grid with two columns (1.1fr : 0.9fr = text slightly wider than the cards). 中文: 小节：首页顶部大区域。两列网格（1.1fr : 0.9fr，文字列比卡片列略宽）。 */
+.hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; padding: 1rem 0 2.5rem; }
+/* EN: clamp(min, preferred, max) = fluid heading size that grows with the screen width but stays within limits. 中文: clamp(最小, 理想, 最大) = 随屏幕宽度变化的标题字号，同时限制在上下限之内。 */
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -.01em; margin-bottom: .4em; }
+.hero-lead { font-size: 1.15rem; color: var(--ink-soft); max-width: 34rem; }
+/* EN: search box + button in a row; min-width:0 lets the input shrink on small screens. 中文: 搜索框和按钮横排；min-width:0 让输入框在小屏幕上可以缩小。 */
+.search-big { display: flex; gap: .5rem; margin: 1.5rem 0 1rem; max-width: 36rem; }
+.search-big input { flex: 1; min-width: 0; }
+.hero-links { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+/* EN: the stack of 3 cards: position:relative makes it the anchor; each card is absolutely positioned and rotated a bit so they overlap like loose index cards. 中文: 3 张卡片叠放：position:relative 让它成为定位基准；每张卡片绝对定位并略微旋转，像散落的索引卡一样重叠。 */
+.card-stack { position: relative; height: 450px; }
+.card-stack .book-card { position: absolute; width: 78%; margin: 0; box-shadow: 0 6px 18px rgba(22,36,58,.14); }
+/* EN: :nth-child(n) picks the 1st/2nd/3rd card; top/left move it; transform:rotate tilts it. 中文: :nth-child(n) 选中第 1/2/3 张卡片；top/left 移动位置；transform:rotate 让它倾斜。 */
+.card-stack .book-card:nth-child(1) { top: 10px; left: 0;   transform: rotate(-4deg); }
+.card-stack .book-card:nth-child(2) { top: 120px; left: 11%; transform: rotate(1.5deg); }
+.card-stack .book-card:nth-child(3) { top: 230px; left: 22%; transform: rotate(3deg); }
+
+/* ---------- sections ---------- */
+/* EN: Section: page sections and headings. 中文: 小节：页面区块和标题。 */
+.section { margin-top: 2.5rem; }
+/* EN: heading on the left, link on the right (space-between). 中文: 标题在左，链接在右（space-between）。 */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.section-head h2 { margin: 0; }
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.page-head h1 { margin: 0; }
+.muted { color: var(--ink-soft); }
+
+/* EN: category tiles: auto-fill + minmax makes as many 170px+ columns as fit, so it adapts to any screen without media queries. 中文: 分类方块：auto-fill + minmax 会尽可能多地排 170px 以上的列，不用媒体查询就能适应任何屏幕。 */
+.cat-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1rem; }
+/* EN: a tile has a thick left edge in the category colour; var(--cat, var(--pine)) = use --cat, or green if it isn't set. 中文: 方块左侧有一条该分类颜色的粗边；var(--cat, var(--pine)) 表示使用 --cat，没设置就用绿色。 */
+.cat-tile {
+    background: var(--paper); border-radius: 6px; padding: .9rem 1rem; text-decoration: none; color: var(--ink);
+    border-left: 6px solid var(--cat, var(--pine)); display: block; box-shadow: 0 1px 2px rgba(22,36,58,.08);
+}
+.cat-tile:hover { box-shadow: 0 3px 10px rgba(22,36,58,.14); color: var(--ink); }
+.cat-tile strong { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+.cat-tile span { color: var(--ink-soft); font-size: .9rem; }
+
+/* EN: the student's loan summary box with a gold left edge. 中文: 学生的借阅摘要框，左边是金色边。 */
+.panel-loans { background: var(--paper); border-radius: 8px; padding: 1.25rem 1.5rem; border-left: 6px solid var(--brass); margin-top: 1rem; }
+.panel-loans h2 { margin-bottom: .3em; }
+
+/* ---------- index-card books ---------- */
+/* EN: Section: book cards. The grid places as many 260px+ cards per row as fit. 中文: 小节：书籍卡片。网格每行尽可能多地放 260px 以上的卡片。 */
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.25rem 1.5rem; padding-top: .75rem; }
+
+/* EN: the card: sets the default colour (--cat); position:relative lets the tab be placed on it; flex column keeps footer at the bottom. 中文: 卡片：设置默认颜色（--cat）；position:relative 让标签可以定位在卡片上；flex 纵向排列让底部区域贴底。 */
+.book-card {
+    --cat: var(--pine);
+    position: relative; background: var(--paper); border-radius: 3px 6px 6px 6px;
+    box-shadow: 0 1px 3px rgba(22,36,58,.16); display: flex; flex-direction: column;
+}
+/* EN: 8 category colours. PHP adds class cat-1..cat-8, which just changes the --cat variable. 中文: 8 种分类颜色。PHP 会加上 cat-1..cat-8 类，它们只是改变 --cat 变量。 */
+.cat-1 { --cat: #1d6b57; } .cat-2 { --cat: #2f5fa7; } .cat-3 { --cat: #7a3e9d; } .cat-4 { --cat: #a4571c; }
+.cat-5 { --cat: #b8892b; } .cat-6 { --cat: #3b7f8f; } .cat-7 { --cat: #a83d62; } .cat-8 { --cat: #5d6b2a; }
+
+/* EN: the coloured tab sticking out above the card (top:-.85rem moves it up); long names are cut with "..." (overflow/ellipsis/nowrap). 中文: 卡片上方伸出的彩色标签（top:-.85rem 把它上移）；名字太长时用 "..." 截断（overflow/ellipsis/nowrap）。 */
+.book-tab {
+    position: absolute; top: -.85rem; left: 1rem; background: var(--cat); color: #fff; text-decoration: none;
+    font-size: .8rem; font-weight: 600; padding: .15rem .8rem; border-radius: 5px 5px 0 0; max-width: 70%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* EN: brightness(1.12) makes the tab slightly lighter on hover. 中文: brightness(1.12) 让标签悬停时稍微变亮。 */
+.book-tab:hover { color: #fff; filter: brightness(1.12); }
+
+/* EN: card header with a red line underneath (like an index card's red heading rule). 中文: 卡片头部，下方有红线（像索引卡的红色标题线）。 */
+.book-head { padding: 1.1rem 1.1rem .65rem; border-bottom: 2px solid var(--margin); }
+.book-head h3 { margin: 0 0 .15rem; font-size: 1.2rem; }
+.book-head h3 a { color: var(--ink); text-decoration: none; }
+.book-head h3 a:hover { text-decoration: underline; }
+.book-author { margin: 0; color: var(--ink-soft); font-size: .93rem; }
+
+/* EN: description with ruled blue lines: line-height 28px equals the gradient's line spacing, so text sits on the lines. repeating-linear-gradient draws a 1px line every 28px. flex:1 makes it fill the free space. 
+   中文: 带蓝色横线的简介：line-height 28px 与渐变线的间距一致，文字正好落在线上。repeating-linear-gradient 每 28px 画一条 1px 的线。flex:1 让它填满剩余空间。 */
+.book-desc {
+    margin: 0; padding: 0 1.1rem; flex: 1; font-size: .92rem; color: var(--ink-soft);
+    line-height: 28px; min-height: 84px;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 27px, var(--rule) 27px, var(--rule) 28px);
+}
+/* EN: card footer: stock label left, Details link right, with a thin line above. 中文: 卡片底部：库存标签在左，Details 链接在右，上方有细线。 */
+.book-foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .7rem 1.1rem; border-top: 1px solid var(--rule); flex-wrap: wrap; }
+
+/* ---------- book detail ---------- */
+/* EN: Section: book detail page. Two columns: flexible content (1fr) + fixed 340px side panel. 中文: 小节：书籍详情页。两列：自适应的内容区（1fr）+ 固定 340px 的侧边栏。 */
+.detail { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
+/* EN: thick coloured top edge from the category colour; overflow:hidden keeps the rounded corners clean. 中文: 顶部有该分类颜色的粗边；overflow:hidden 让圆角保持整洁。 */
+.detail-card { background: var(--paper); border-radius: 6px; padding: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(22,36,58,.16); border-top: 8px solid var(--cat, var(--pine)); }
+.detail-card .inner { padding: 1.5rem 1.75rem; }
+.detail-card h1 { border-bottom: 2px solid var(--margin); padding-bottom: .4rem; }
+/* EN: label/value list in two columns: labels as wide as needed (max-content), values take the rest. 中文: 两列的"名称/值"列表：名称按需要的宽度（max-content），值占用剩余空间。 */
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1.25rem; margin: 1rem 0 0; }
+.facts dt { color: var(--ink-soft); }
+.facts dd { margin: 0; font-weight: 500; }
+.side-panel { background: var(--paper); border-radius: 6px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(22,36,58,.16); }
+.side-panel h2 { font-size: 1.2rem; }
+/* EN: the big "copies available" number. 中文: 醒目的"可借册数"大数字。 */
+.copies { font-family: var(--font-display); font-size: 2rem; line-height: 1; margin-bottom: .25rem; }
+
+/* ---------- forms ---------- */
+/* EN: Section: forms. 中文: 小节：表单。 */
+label { display: block; font-weight: 600; margin-bottom: .25rem; }
+/* EN: all inputs share one look: font:inherit uses the page font; width:100% fills the container. 中文: 所有输入框共用同一外观：font:inherit 使用页面字体；width:100% 填满容器。 */
+input, select, textarea {
+    font: inherit; color: var(--ink); width: 100%; padding: .55rem .7rem; background: #fff;
+    border: 1.5px solid #aeb9c9; border-radius: 6px;
+}
+/* EN: focused field: green border + soft green glow. 中文: 获得焦点的输入框：绿色边框 + 柔和的绿色光晕。 */
+input:focus, select:focus, textarea:focus { border-color: var(--pine); outline: 3px solid rgba(29,107,87,.25); }
+/* EN: resize:vertical lets users drag the textarea taller only. 中文: resize:vertical 只允许用户上下拖动调整文本框高度。 */
+textarea { min-height: 120px; resize: vertical; }
+.field { margin-bottom: 1.1rem; }
+.field-error { color: var(--bad-fg); font-size: .9rem; margin: .25rem 0 0; }
+.field-hint { color: var(--ink-soft); font-size: .88rem; margin: .25rem 0 0; }
+/* EN: red border for fields with errors. 中文: 有错误的字段显示红色边框。 */
+.input-invalid { border-color: var(--margin); }
+
+/* EN: centred white card for login/register forms; width:min(440px,100%) = 440px max but never wider than the screen. 中文: 登录/注册表单用的居中白色卡片；width:min(440px,100%) 表示最宽 440px，但不会超过屏幕宽度。 */
+.form-card { width: min(440px, 100%); margin: 1rem auto; background: var(--paper); border-radius: 6px; box-shadow: 0 1px 3px rgba(22,36,58,.16); border-top: 8px solid var(--pine); }
+.form-card .inner { padding: 1.75rem; }
+.form-card h1 { font-size: 1.8rem; border-bottom: 2px solid var(--margin); padding-bottom: .4rem; margin-bottom: 1.1rem; }
+.form-switch { text-align: center; margin: 1.25rem 0 0; color: var(--ink-soft); }
+/* EN: wider card for the book form; two-column row; button row. 中文: 书籍表单用的更宽卡片；两列行；按钮行。 */
+.form-wide { width: min(720px, 100%); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: .5rem; }
+
+/* EN: search/filter bar: 4 columns (search grows, category 220px, two auto-sized); align-items:end lines inputs up at the bottom. 中文: 搜索/筛选栏：4 列（搜索框自适应、分类 220px、另外两列按内容宽度）；align-items:end 让输入框底部对齐。 */
+.filters { display: grid; grid-template-columns: 1fr 220px auto auto; gap: .75rem; align-items: end; background: var(--paper); padding: 1rem; border-radius: 6px; margin-bottom: 1.75rem; box-shadow: 0 1px 2px rgba(22,36,58,.1); }
+/* EN: the checkbox row: width:auto stops the checkbox from stretching to 100%. 中文: 复选框所在行：width:auto 防止复选框被拉伸到 100% 宽。 */
+.filters .check { display: flex; align-items: center; gap: .5rem; padding-bottom: .55rem; font-weight: 500; margin: 0; white-space: nowrap; }
+.filters .check input { width: auto; }
+/* EN: a 3-column version of the filter bar (used on admin pages). 中文: 筛选栏的 3 列版本（用于后台页面）。 */
+.filters-compact { grid-template-columns: 1fr 200px auto; }
+
+/* EN: "add new" form on categories/authors pages. 中文: 分类/作者页面的"新增"表单。 */
+.inline-add { display: flex; gap: .75rem; align-items: end; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.inline-add > div, .inline-add input { flex: 1; min-width: 180px; }
+.inline-add label { width: 100%; margin: 0; }
+.card-panel { background: var(--paper); padding: 1rem 1.25rem; border-radius: 6px; box-shadow: 0 1px 2px rgba(22,36,58,.1); }
+/* EN: rename form inside a table row: input and Save button side by side. 中文: 表格行里的重命名表单：输入框和 Save 按钮并排。 */
+.row-form { display: flex; gap: .5rem; align-items: center; }
+.row-form input { max-width: 320px; }
+
+/* ---------- tables ---------- */
+/* EN: Section: tables. overflow-x:auto lets wide tables scroll sideways inside their box on small screens. 中文: 小节：表格。overflow-x:auto 让宽表格在小屏幕上可以在框内横向滚动。 */
+.table-wrap { overflow-x: auto; background: var(--paper); border-radius: 6px; box-shadow: 0 1px 2px rgba(22,36,58,.1); }
+/* EN: border-collapse:collapse merges cell borders into single lines. 中文: border-collapse:collapse 把单元格边框合并成单线。 */
+.table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.table th { text-align: left; padding: .7rem 1rem; background: #f2f5f9; border-bottom: 2px solid var(--margin); font-weight: 600; white-space: nowrap; }
+.table td { padding: .65rem 1rem; border-bottom: 1px solid #e4e9f0; vertical-align: middle; }
+/* EN: zebra stripes: every even row gets a very light background. 中文: 斑马纹：每个偶数行有很浅的背景色。 */
+.table tbody tr:nth-child(even) { background: #fafcfe; }
+/* EN: no line under the last row. 中文: 最后一行下面不画线。 */
+.table tr:last-child td { border-bottom: 0; }
+/* EN: actions column: right-aligned; forms inside become inline so Edit and Delete sit side by side. 中文: 操作列：右对齐；里面的表单变成行内块，Edit 和 Delete 就能并排。 */
+.col-actions { text-align: right; white-space: nowrap; }
+.col-actions form { display: inline-block; margin-left: .25rem; }
+.empty { padding: 2rem 1rem; text-align: center; color: var(--ink-soft); background: var(--paper); border-radius: 6px; }
+/* EN: overdue rows get a red bar on the left of the first cell (inset shadow). 中文: 逾期的行在第一个单元格左边有一条红色竖条（内阴影）。 */
+.row-late td:first-child { box-shadow: inset 4px 0 0 var(--margin); }
+
+/* EN: page number buttons; the current page is dark. 中文: 页码按钮；当前页是深色。 */
+.pager { display: flex; gap: .4rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+.pager a, .pager-current { min-width: 2.2rem; padding: .3rem .6rem; text-align: center; border-radius: 6px; text-decoration: none; background: var(--paper); border: 1px solid var(--line); }
+.pager-current { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ---------- dashboard ---------- */
+/* EN: Section: dashboard. auto-fit + minmax(190px,1fr) makes the stat boxes fill the row evenly. 中文: 小节：仪表盘。auto-fit + minmax(190px,1fr) 让统计方块均匀铺满一行。 */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.stat { background: var(--paper); border-radius: 6px; padding: 1rem 1.2rem; border-left: 6px solid var(--pine); box-shadow: 0 1px 2px rgba(22,36,58,.1); text-decoration: none; color: var(--ink); display: block; }
+/* EN: "a.stat" = only .stat elements that are links (the librarian's Students box is a div and has no hover). 中文: "a.stat" 只选中是链接的 .stat（图书管理员看到的 Students 方块是 div，没有悬停效果）。 */
+a.stat:hover { box-shadow: 0 3px 10px rgba(22,36,58,.16); color: var(--ink); }
+.stat b { display: block; font-family: var(--font-display); font-size: 2.3rem; line-height: 1.1; }
+.stat span { color: var(--ink-soft); }
+/* EN: colour variants: red (warning), gold, blue. 中文: 颜色变体：红色（警告）、金色、蓝色。 */
+.stat-warn { border-color: var(--margin); }
+.stat-gold { border-color: var(--brass); }
+.stat-blue { border-color: #2f5fa7; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.quick { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+
+/* EN: centred message page (404, 403). 中文: 居中的提示页（404、403）。 */
+.notice-page { max-width: 560px; margin: 3rem auto; text-align: center; }
+
+/* EN: role badges in the header; !important beats the more general .user-chip small background. 中文: 页头里的角色徽章；!important 让它压过更通用的 .user-chip small 背景色。 */
+.role-admin { background: var(--margin) !important; }
+.role-librarian { background: var(--brass) !important; color: #1b1405; }
+
+/* ---------- footer ---------- */
+/* EN: Section: footer, same navy as the header. 中文: 小节：页脚，和页头同样的深蓝色。 */
+.site-footer { background: var(--ink); color: #b9c6d9; font-size: .9rem; padding: 1rem 0; }
+.footer-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
+/* ---------- small screens ---------- */
+/* EN: Section: responsive design. @media applies the rules only when the screen is narrower than the given width. 中文: 小节：响应式设计。@media 只在屏幕比指定宽度更窄时才应用其中的规则。 */
+@media (max-width: 860px) {
+    /* EN: tablets: stack columns into one, hide the decorative card stack, filters in 2 columns. 中文: 平板：多列变一列，隐藏装饰性卡片堆，筛选栏变 2 列。 */
+    .hero { grid-template-columns: 1fr; gap: 1.5rem; }
+    .card-stack { display: none; }
+    .detail { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .filters, .filters-compact { grid-template-columns: 1fr 1fr; }
+    /* EN: header buttons move to their own full-width line. 中文: 页头按钮移到单独的整行。 */
+    .header-actions { margin-left: 0; width: 100%; }
+}
+@media (max-width: 520px) {
+    /* EN: phones: smaller headings, everything in one column. 中文: 手机：标题更小，所有内容单列显示。 */
+    h1 { font-size: 1.7rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .filters, .filters-compact { grid-template-columns: 1fr; }
+    .search-big { flex-direction: column; }
+    .row-form { flex-wrap: wrap; }
+}
+
+/* EN: ACCESSIBILITY: if the user's device asks for less motion, turn off transitions/animations. 中文: 无障碍：如果用户的设备要求减少动画，就关闭过渡和动画效果。 */
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
