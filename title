@@ -1,0 +1,181 @@
+# Project Proposal: PHP + MySQL Application
+
+> **Course:** J620-002-4:2020 Front-End Software Development (Level 4)
+> **Competency Unit:** J620-002-4:2020-C01
+> **Instructions:** Replace every `[ ... ]` and delete the hint lines (starting with `>`) before submitting. Keep this file as `README.md` in the root of your project repository.
+
+---
+
+## 1. Student Details
+
+| Field | Your Answer |
+|---|---|
+| Candidate Name | [ LIM YEE MIN ] |
+| NRIC Number    | [ 080406-02-1067 ] |
+| Date Submitted | [ ... ] |
+
+---
+
+## 2. Project Title
+
+**[ Libary Management sistem  ]**
+   
+
+### One-line summary
+[ A web-based library management system that allows librarians to manage books and borrowing records while students can search, borrow, and track books. ]
+
+---
+
+## 3. Problem Statement & Purpose
+
+> What problem does your application solve? Who is it for? Why is it useful?
+
+[Managing a library manually can be time-consuming and make it difficult to track books, borrowing records, and overdue books.
+
+SmartLib provides a simple web-based system to manage books and borrowing records. Students can search, borrow, and return books, while administrators and librarians can manage the library efficiently.
+
+The system is designed for schools, colleges, and small libraries ]
+
+---
+
+## 4. Tech Stack
+
+> Required: HTML, CSS, PHP, MySQL.
+
+| Layer       | Technology |
+| Markup      | HTML5      |
+| Styling     | CSS3       |
+| Server-side | PHP        |
+| Database    | MySQL      |
+
+---
+
+## 5. Types of Users (Roles)
+
+> Minimum **3 roles**. Each role must have different levels of access.
+
+| Role | Description |
+|---|---|
+| [ Role 1, e.g. Admin ] | [ Admin] |
+| [ Role 2, e.g. Staff ] | [ Libarian] |
+| [ Role 3, e.g. Customer ] | [ student ] |
+
+### Role-Based Access Matrix
+   
+> Mark what each role can do. Add or remove rows to match your features.
+____________________________________________________________________________________
+| Feature / Page            | Admin   | Libarian | Student  | Guest (not logged in) |
+|-----------------------------------------------------------------------------------|
+| Register / Login          |  ✅	|  ✅	  |      ✅	|    ✅
+| View Books	            |  ✅	|  ✅      |      ✅  |    ✅
+|Manage Users	            |  ✅	|  ❌	  |      ❌	|    ❌
+| Manage Books	            |  ✅	|  ✅	  |      ❌	|    ❌
+| Manage Categories	        |  ✅	|  ✅	  |      ❌	|    ❌
+| Borrow Books	            |  ❌	|  ❌	  |      ✅	|    ❌
+| Process Book Returns	    |  ❌	|  ✅	  |      ❌	|    ❌
+| View All Borrowing Records|  ✅	|  ✅	  |      ❌	|    ❌
+| View Own Borrowing Records|  ❌	|  ❌	  |      ✅	|    ❌
+| View Overdue Books	    |  ✅	|  ✅      |   	 ❌	|    ❌
+
+## 6. Features
+
+### 6.1 Core Features (must have)
+
+- [ ] User registration and login 
+- [ ] Role-based access control (each role sees/does different things)
+- [ ] Data management (Create, Read, Update, Delete)
+- [ ] [ Book borrowing and returning ]
+- [ ] [ Borrowing record management ]
+
+### 6.2 Extra Features (nice to have)
+
+- [ ] [ book and filtering ]
+- [ ] [ Overdue book tracking]
+
+### 6.3 Feature Descriptions
+
+> Briefly explain each core feature: what it does and which role uses it.
+
+| Feature                   | Description                                                                               | Role(s) |
+User Registration and Login	|Allows users to create accounts and securely log into the system according to their roles.	|Admin, Librarian, Student
+Book Management	            |Allows authorized users to add, view, edit, and delete book information.	                |Admin, Librarian
+Book Search                 |Allows users to search for books by title, author, or category.	                        |Admin, Librarian, Student, Guest
+Borrow Books	            |Allows students to borrow available books and creates a borrowing record.	                | Student
+Return Books	            |Allows librarians to process returned books and update the book availability.      	    |Librarian
+Borrowing History	        |Allows students to view their current and previous borrowing records.	                    |Student
+Overdue Tracking	        |Displays books that have passed their due date and have not been returned.	                | Admin, Librarian
+Dashboard	                |Displays statistics such as total books, borrowed books, students, and overdue books.	    |Admin, Librarian
+---
+
+## 7. Data Management System
+
+> Which data can users create, view, edit and delete? Who is allowed to do what?
+
+Data / Entity  | Create            | Read                              | Update             | Delete 
+_______________|___________________|___________________________________|____________________|_________________
+Users	       |Admin	           |Admin	                           |Admin	            | Admin
+Books          |Admin, Librarian   |Admin, Librarian, Student, Guest   |Admin, Librarian    |Admin, Librarian
+Categories	   |Admin, Librarian   |Admin, Librarian, Student, Guest   |Admin, Librarian    |Admin, Librarian
+Authors	       |Admin, Librarian   |Admin, Librarian, Student, Guest   |Admin, Librarian	|Admin, Librarian
+Borrowings	   |Student            |Admin, Librarian, Student	       |Librarian	        |Admin
+
+---
+
+## 8. Database Design
+
+> Minimum **4 tables** with at least **3 linkages** (foreign keys) between them.
+
+1.users
+2.books
+3.categories
+4.authors
+5.borrowings
+
+### Entity Relationship Diagram (ERD)
+
+> Create your own ERD for your database and place it here. You can draw it in draw.io or dbdiagram.io and insert the exported image (e.g. `![ERD](docs/erd.png)`), or write it in Mermaid.
+
+[ 1. ]
+
+---
+
+## 9. Use Case Diagram
+
+> Show the actors (roles) and what each can do in the system. Use a Mermaid flowchart below, or export an image from draw.io / Lucidchart to `docs/usecase.png`.
+
+```mermaid
+flowchart 
+LR A([Admin]) --> UC1[Login]
+A --> UC2[Manage Users] 
+A --> UC3[Manage Books] 
+A --> UC4[Manage Categories]
+A --> UC5[View Borrowing Records]
+A --> UC6[View Overdue Books]
+
+
+B([Librarian]) --> UC1
+ B --> UC3 
+ B --> UC4 
+ B --> UC7[Process Book Returns]
+ B --> UC5 B --> UC6 
+
+C([Student]) --> UC1
+C --> UC8[Search Books] 
+C --> UC9[Borrow Books] 
+C --> UC10[View Own Borrowing Records] 
+C --> UC11[Return Books] D([Guest]) --> UC8 
+
+D --> UC12[Register]
+```
+
+---
+
+## 10. Presentation Checklist
+
+- [ ] Can explain the purpose of the application
+- [ ] Can justify design choices (why this database structure, why these roles)
+- [ ] Can demo every role
+- [ ] Can answer questions about my own code
+- [ ] Submitted on time
+
+
